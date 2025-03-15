@@ -11,7 +11,7 @@ export class CommentService {
 
 
     async findAll(){
-        let data = await this.commentModel.find().populate({path:"userId", select:"name phone"}).exec();
+        let data = await this.commentModel.find().populate("userId", "name phone").populate("elonId", "name").exec();
         if(!data.length){
             return "No comments found!"
         }

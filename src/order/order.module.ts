@@ -1,16 +1,16 @@
 import { Module } from '@nestjs/common';
-import { CommentController } from './comment.controller';
-import { CommentService } from './comment.service';
+import { OrderController } from './order.controller';
+import { OrderService } from './order.service';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Comment,commentSchema } from './entity/comment.entity';
+import { Order, OrderSchema } from './entity/order.entity';
 import { User, userSchema } from 'src/user/entity/user.entity';
 import { Product, ProductSchema } from 'src/elon/entity/elon.entity';
 
 @Module({
-  imports:[MongooseModule.forFeature([{name:Comment.name, schema:commentSchema}]),
+  imports: [MongooseModule.forFeature([{name:Order.name, schema:OrderSchema}]),
   MongooseModule.forFeature([{name:User.name, schema:userSchema}]),
   MongooseModule.forFeature([{name:Product.name, schema:ProductSchema}])],
-  controllers: [CommentController],
-  providers: [CommentService]
+  controllers: [OrderController],
+  providers: [OrderService]
 })
-export class CommentModule {}
+export class OrderModule {}

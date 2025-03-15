@@ -9,8 +9,8 @@ export type commentDocument = HydratedDocument<Comment>
 export class Comment{
     @Prop({type: MongooseSchema.Types.ObjectId, ref:"User"})
     userId:Types.ObjectId
-    // @Prop({type: MongooseSchema.Types.ObjectId, ref:"Elon"})
-    // elonId:Types.ObjectId
+    @Prop({type: MongooseSchema.Types.ObjectId, ref:"Product"})
+    elonId:Types.ObjectId
     @Prop()
     msg:string
 }

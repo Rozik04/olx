@@ -19,7 +19,7 @@ export class UserService {
     }
 
     async findOne(id:string){
-        let Data = await this.userModel.findById(id)
+        let Data = await this.userModel.findById(id).populate("regionid").exec();
         if(!Data){
             return "No found region"
         }
@@ -53,6 +53,14 @@ export class UserService {
         }
         let token = this.jwtSerive.sign({id:checkEmail.id});
         return {data:checkEmail, token};
+    }
+
+    async findImage(id:string){
+        let Data = await this.userModel.findById(id)
+        if(!Data){
+            return "No found user"
+        }
+        return Data.image
     }
 
     async update(userId:string, id:string, data:UserUpDto){

@@ -6,6 +6,8 @@ import { UserDto } from 'src/user/dto/user.dto';
 import { userLoginType } from 'src/user/dto/userLogin.dto';
 import { UserUpDto } from 'src/user/dto/userUp.dto';
 import { JwtAuthGuard } from 'src/auth.guard';
+import * as fs from "fs/promises"
+import { join } from 'path';
 
 @Controller('user')
 export class UserController {
@@ -40,6 +42,23 @@ export class UserController {
         return this.userService.login(data);
     }
 
+    @Patch("update/:id")
+    @UseInterceptors(FileInterceptor("image", multerCon))
+    async updateImage(@Param("id") id:string,@UploadedFile() image: Express.Multer.File){
+        if(image){
+            let oldimage = await this.userService.findImage(id);
+            try {
+            let  eskiimage = join(__dirname, "../../uploads", oldimage);
+            await fs.unlink(eskiimage); 
+            return {file:image.filename}
+            }
+            catch (err) {
+                console.error(`Xatolik yuz berdi: ${err.message}`);
+                }
+            }
+        }
+
+
     @UseGuards(JwtAuthGuard)
     @Patch(":id")
     update(@Body(new ValidationPipe()) data: UserUpDto, @Request() req, @Param("id", new ValidationPipe())id:string){
@@ -53,4 +72,4 @@ export class UserController {
         let userId = req.user.id;
         return this.userService.remove(userId,id);
     }
-}
+} 

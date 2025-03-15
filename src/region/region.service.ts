@@ -16,13 +16,13 @@ export class RegionService {
         return {data};
     }
 
-        async findOne(id:string){
+    async findOne(id:string){
             let Data = await this.regionModel.findById(id)
             if(!Data){
                 return "No found region"
             }
             return {Data}
-        }
+    }
 
     async create(data:regionDto){
         let createdData = await this.regionModel.create({name:data.name});
@@ -32,10 +32,10 @@ export class RegionService {
     async update(id:string, data:regionDto){
         let updatedData = await this.regionModel.findByIdAndUpdate(id, data, {new:true});
         return {updatedData};
-}
+    }
 
     async remove(id:string){
         let deltedData = await this.regionModel.findByIdAndDelete(id);
         return {deltedData};
-} 
+    } 
 }

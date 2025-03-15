@@ -1,13 +1,15 @@
 import { IsNotEmpty, IsOptional, IsString } from "class-validator";
 
-export class commentUpDto{
+export class OrderUpDto {
     @IsString()
     @IsOptional()
-    userId:string
+    userId: string;
+
     @IsString()
     @IsOptional()
-    elonId:string
+    elonId: string;
+
     @IsString()
     @IsOptional()
-    msg:string
+    date: string;
 }

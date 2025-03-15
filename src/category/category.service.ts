@@ -26,6 +26,14 @@ export class CategoryService {
         return {Data}
     }
 
+    async findImage(id:string){
+        let Data = await this.categoryModel.findById(id)
+        if(!Data){
+            return "No found category"
+        }
+        return Data.image
+    }
+
     async create(data:categoryDto){
         let createdData = await this.categoryModel.create(data)
         return {createdData}
