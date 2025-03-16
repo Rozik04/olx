@@ -22,8 +22,7 @@ export class Product {
     @Prop({ type: MongooseSchema.Types.ObjectId, ref: "Category" })
     categoryId: Types.ObjectId;
     
-    @Prop()
-    star: number;
+
     
     @Prop({ type: MongooseSchema.Types.ObjectId, ref: "User" })
     userId: Types.ObjectId;

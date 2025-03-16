@@ -12,7 +12,7 @@ import * as path from 'path';
 
 @Injectable()
 export class UserService {
-    constructor(@InjectModel(User.name) private readonly userModel:Model<User>, private readonly jwtSerive: JwtService){}
+    constructor(@InjectModel(User.name) public readonly userModel:Model<User>, private readonly jwtSerive: JwtService){}
 
     async findAll(){
         return await this.userModel.find().populate("regionId").exec();

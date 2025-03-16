@@ -1,7 +1,8 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards, ValidationPipe, Request } from '@nestjs/common';
 import { CommentService } from './comment.service';
 import { commentDto } from './dto/comment.dto';
 import { commentUpDto } from './dto/commentUpdate.dto';
+import { JwtAuthGuard } from 'src/auth.guard';
 
 @Controller('comment')
 export class CommentController {
@@ -25,13 +26,25 @@ export class CommentController {
 
     
     @Patch(":id")
-    update(@Param("id") id:string, @Body(new ValidationPipe) data:commentUpDto){
-        return this.commentService.update(id, data);
+    @UseGuards(JwtAuthGuard)
+    update(@Param("id") id:string,@Request() req, @Body(new ValidationPipe) data:commentUpDto){
+        let userId = req.user.id
+        return this.commentService.update(userId, id, data);
     }
 
 
     @Delete(":id")
-    remove(@Param("id") id:string){
-        return this.commentService.remove(id);
+    @UseGuards(JwtAuthGuard)
+    remove(@Request() req, @Param("id") id:string){
+        let userId = req.user.id
+        return this.commentService.remove(userId, id);
     }
+
+    @Get("user/:id")
+    @UseGuards(JwtAuthGuard)
+    finds(@Request() req, @Param("id") usId: string){
+        let userId = req.user.id
+        return this.commentService.finds(userId, usId)
+    }
+
 }

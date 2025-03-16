@@ -22,9 +22,6 @@ export class ProductDto {
     @IsNotEmpty()
     categoryId: Types.ObjectId;
 
-    @IsOptional()
-    @IsNumber()
-    star?: number;
 
     @IsNotEmpty()
     userId: Types.ObjectId;

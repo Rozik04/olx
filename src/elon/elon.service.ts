@@ -40,12 +40,12 @@ export class ElonService {
         return Data.image
     }
 
-    async update(id:string, data: ProductUpDto){
+    async update(userId:string, id:string, data: ProductUpDto){
         let updatedData = await this.productModel.findByIdAndUpdate(id, data, {new:true})
         return {updatedData}
     }
 
-    async remove(id:string){
+    async remove(userId:string, id:string){
         let data = await this.productModel.findById(id)
         if(!data){
             return "Not found product"

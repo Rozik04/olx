@@ -29,12 +29,12 @@ export class RegionService {
         return {createdData};
     }
 
-    async update(id:string, data:regionDto){
+    async update(userId:string, id:string, data:regionDto){
         let updatedData = await this.regionModel.findByIdAndUpdate(id, data, {new:true});
         return {updatedData};
     }
 
-    async remove(id:string){
+    async remove(userId:string, id:string){
         let deltedData = await this.regionModel.findByIdAndDelete(id);
         return {deltedData};
     } 

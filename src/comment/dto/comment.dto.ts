@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString } from "class-validator";
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 
 export class commentDto{
     @IsString()
@@ -10,4 +10,7 @@ export class commentDto{
     @IsString()
     @IsNotEmpty()
     msg:string
+    @IsOptional()
+    @IsNumber()
+    star?: number;
 }

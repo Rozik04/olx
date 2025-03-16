@@ -1,10 +1,12 @@
-import { BadRequestException, Body, Controller, Delete, Get, Param, Patch, Post, UploadedFile, UseInterceptors, ValidationPipe } from '@nestjs/common';
+import { BadRequestException, Request, Body, Controller, Delete, Get, Param, Patch, Post, UploadedFile, UseGuards, UseInterceptors, ValidationPipe } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { categoryDto } from './dto/category.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { multerCon } from 'src/multer';
 import { join } from 'path';
 import * as fs from "fs/promises"
+import { JwtAuthGuard } from 'src/auth.guard';
+import { categoryUpDto } from './dto/categoryUp.dto';
 
 @Controller('category')
 export class CategoryController {
@@ -50,14 +52,18 @@ export class CategoryController {
         return this.categoryService.create(data)
     }
 
+    @UseGuards(JwtAuthGuard)
     @Patch(":id")
-    update(@Param("id")id:string, @Body(new ValidationPipe) data:categoryDto){
-        return this.categoryService.update(id, data)
+    update(@Request() req, @Param("id")id:string, @Body(new ValidationPipe) data:categoryUpDto){
+        let userId = req.user.id
+        return this.categoryService.update(userId, id, data)
     }
   
+    @UseGuards(JwtAuthGuard)
     @Delete(":id")
-    remove(@Param("id")id:string){
-        return this.categoryService.remove(id)
+    remove(@Request() req,@Param("id")id:string){
+        let userId = req.user.id
+        return this.categoryService.remove(userId, id)
     }
     
 }

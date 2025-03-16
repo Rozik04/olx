@@ -5,6 +5,7 @@ import * as fs from "fs/promises"
 import { InjectModel } from '@nestjs/mongoose';
 import { categoryDto } from './dto/category.dto';
 import {join} from 'path';
+import { categoryUpDto } from './dto/categoryUp.dto';
 
 @Injectable()
 export class CategoryService {
@@ -39,12 +40,12 @@ export class CategoryService {
         return {createdData}
     }
 
-    async update(id:string, data:categoryDto){
+    async update(userId: string, id:string, data:categoryUpDto){
         let updatedData = await this.categoryModel.findByIdAndUpdate(id, data, {new:true})
         return {updatedData}
     }
     
-    async remove(id:string){
+    async remove(userId: string, id:string){
         let checkCategory = await this.categoryModel.findById(id)
         if(!checkCategory){
             return "Not found category"

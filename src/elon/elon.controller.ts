@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, UploadedFile, UseInterceptors, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Request, Delete, Get, Param, Patch, Post, UploadedFile, UseGuards, UseInterceptors, ValidationPipe } from '@nestjs/common';
 import { ElonService } from './elon.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { multerCon } from 'src/multer';
@@ -6,6 +6,7 @@ import { ProductDto } from './dto/elon.dto';
 import * as fs from "fs/promises"
 import { join } from 'path';
 import { ProductUpDto } from './dto/elonUp.dto';
+import { JwtAuthGuard } from 'src/auth.guard';
 
 @Controller('elon')
 export class ElonController {
@@ -52,13 +53,17 @@ export class ElonController {
     }
 
     @Patch(":id")
-    update(@Body(new ValidationPipe) data: ProductUpDto, @Param("id") id:string){
-        return this.productService.update(id, data)
+    @UseGuards(JwtAuthGuard)
+    update(@Request() req, @Body(new ValidationPipe) data: ProductUpDto, @Param("id") id:string){
+        let userId = req.user.id
+        return this.productService.update(userId, id, data)
     }
 
     @Delete(":id")
-    remove( @Param("id") id:string){
-        return this.productService.remove(id)
+    @UseGuards(JwtAuthGuard)
+    remove(@Request() req, @Param("id") id:string){
+        let userId = req.user.id
+        return this.productService.remove(userId, id)
     }
 
 

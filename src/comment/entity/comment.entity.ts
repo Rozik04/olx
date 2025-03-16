@@ -13,6 +13,8 @@ export class Comment{
     elonId:Types.ObjectId
     @Prop()
     msg:string
+    @Prop()
+    star: number;
 }
 
 export let commentSchema = SchemaFactory.createForClass(Comment)

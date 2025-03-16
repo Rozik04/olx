@@ -22,9 +22,6 @@ export class ProductUpDto {
     @IsOptional()
     categoryId?: Types.ObjectId;
 
-    @IsOptional()
-    @IsNumber()
-    star?: number;
 
     @IsOptional()
     userId?: Types.ObjectId;

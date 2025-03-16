@@ -4,6 +4,7 @@ import { Model } from 'mongoose';
 import { Order } from './entity/order.entity';
 import { OrderDto } from './dto/order.dto';
 import { OrderUpDto } from './dto/orderUp.dto';
+import { User } from 'src/user/entity/user.entity';
 
 @Injectable()
 export class OrderService {
@@ -30,13 +31,20 @@ export class OrderService {
         return { createdData };
     }
 
-    async update(id: string, data: OrderUpDto) {
+    async update(userId:string, id: string, data: OrderUpDto) {
         let updatedData = await this.orderModel.findByIdAndUpdate(id, data, { new: true });
         return { updatedData };
     }
 
-    async remove(id: string) {
+    async remove(userId:string, id: string) {
         let deletedData = await this.orderModel.findByIdAndDelete(id);
         return { deletedData };
     }
+
+    async finds(userId:string,usId:string){
+        let users = await this.orderModel.find({userId:usId}).populate("elonId", "name").populate("userId", "name").exec();
+        return users
+    }
+        
+
 }

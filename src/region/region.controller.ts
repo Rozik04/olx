@@ -1,6 +1,7 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Request, Delete, Get, Param, Patch, Post, UseGuards, ValidationPipe } from '@nestjs/common';
 import { RegionService } from './region.service';
 import { regionDto } from 'src/region/dto/region.dto';
+import { JwtAuthGuard } from 'src/auth.guard';
 
 @Controller('region')
 export class RegionController {
@@ -22,13 +23,17 @@ export class RegionController {
     }
 
     @Patch(":id")
-    update(@Body(new ValidationPipe) data:regionDto, @Param("id") id:string){
-        return this.regionService.update(id, data)
+    @UseGuards(JwtAuthGuard)
+    update(@Request() req,@Body(new ValidationPipe) data:regionDto, @Param("id") id:string){
+        let userId = req.user.id
+        return this.regionService.update(userId, id, data)
     }
 
     @Delete(":id")
-    remove(@Param("id") id:string){
-        return this.regionService.remove(id)
+    @UseGuards(JwtAuthGuard)
+    remove(@Request() req,@Param("id") id:string){
+        let userId = req.user.id
+        return this.regionService.remove(userId, id)
     }
 
     
